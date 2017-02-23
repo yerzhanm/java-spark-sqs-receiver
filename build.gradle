@@ -1,0 +1,40 @@
+//plugins {
+//    id "net.robyf.jarinjar" version "1.0.6"
+//}
+
+group 'yerzhanm'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+repositories {
+    maven {
+        url "https://repository.jboss.org/nexus/content/groups/public/"
+    }
+    mavenCentral()
+}
+
+//executableJar {
+//    mainClass 'sqs-receiver'
+//}
+
+dependencies {
+
+    compile group: 'org.apache.spark', name: 'spark-streaming_2.11', version: '2.1.0'
+    compile group: 'org.apache.spark', name: 'spark-core_2.11', version: '2.1.0'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.78'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.77'
+}
+
+jar {
+    from {
+        configurations.compile.filter( {! (it.name =~ /spark.*\.jar/ )}).collect { it.isDirectory() ? it : zipTree(it) }
+//        configurations.compile.collect {
+//            it.isDirectory() ? it : zipTree(it)
+//        }
+    }
+}
